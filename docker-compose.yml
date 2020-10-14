@@ -1,0 +1,28 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    # コンテナ名を明示的に指定する
+    container_name: mysql-db-container
+    # ホスト名を明示的に指定する
+    hostname: db-server
+    volumes:
+      # 作成した volume に /var/lib/mysql をマウント
+      - mysql-db-store:/var/lib/mysql
+      - ./logs:/var/log/mysql
+      - ./my.cnf:/etc/mysql/conf.d/my.cnf
+      - ./initdb:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASS}
+      - TZ=${TZ}
+    ports:
+      - ${DB_PORT}:3306
+    # エラー対策
+    # File ./undo_001: 'aio write' returned OS error 122. Cannot continue operation
+    command: --innodb-use-native-aio=0
+
+volumes:
+  mysql-db-store:
