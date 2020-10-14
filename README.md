@@ -1,21 +1,13 @@
-Laravel 6.2 REST API CRUD with Passport Authentication Tutorial
-https://www.mynotepaper.com/laravel-62-rest-api-crud-with-passport-authentication-tutorial
-
-php artisan key:generate
-
-Laravel 8 REST API with Passport Authentication Tutorial
-https://itsolutionstuff.com/post/laravel-8-rest-api-with-passport-authentication-tutorialexample.html
-
 # Laravel 8 Rest API CRUD を Passport 認証で
 
-Passport 認証のチュートリアルで、Laravel 8 による Rest API を使った CRUD を学習する。このチュートリアルでは、Laravel 8 で Passport 認証を使用して RESTful CRUD API を作成する方法を学習する。Passport 認証は通常、デジタル署名を使用して信頼および検証できる情報を送信するために使用される。RESTful API では、アクションとしてHTTP メソッドを使用し、エンドポイントは作用を受けるリソースです。その意味のために HTTP 動詞を使用している。
+Passport 認証のチュートリアルで、Laravel 8 による Rest API を使った CRUD を学習する。このチュートリアルでは、Laravel 8 で Passport 認証を使用して RESTful CRUD API を作成する方法を学習する。Passport 認証は通常、デジタル署名を使用して信頼および検証できる情報を送信するために使用される。RESTful API では、アクションとして HTTP メソッドを使用し、エンドポイントは作用を受けるリソースです。その意味のために HTTP 動詞を使用している。
 
 - GET：リソースを取得する
 - POST：リソースを作成する
 - PUT：リソースを更新します
 - 削除：リソースを削除します
 
-それでは、LaravelAPIを段階的に使用する方法を見てみましょう。パスポート認証を使用したLaravel8のRESTfulAPI。また、APIを使用したユーザー製品の完全に機能するCRUDも紹介します。
+それでは、LaravelAPI を段階的に使用する方法を見てみましょう。パスポート認証を使用した Laravel8 の RESTfulAPI。また、API を使用したユーザー製品の完全に機能する CRUD も紹介します。
 
 - Login API
 - Register API
@@ -27,42 +19,52 @@ Passport 認証のチュートリアルで、Laravel 8 による Rest API を使
 - Delete Product API
 
 ## 実施環境
+
 - Windows 10 Home 64bit バージョン 1909（OS ビルド 18363.1082）
 - Node.js v14.11.0
 
 ## Step 0: ワークスペースの確保
+
 チュートリアルを行うために今回は、デスクトップにワークスペースを用意する。以降のコマンドは、Git Bash で実行する。
 
 デスクトップに移動する。
+
 ```console
 cd /c/Users/＜ユーザ名>/Desktop
 ```
 
 作業フォルダ bogota を作成する。
+
 ```console
 mkdir ./workspace.test.laravel8.api
 ```
 
 作業フォルダ内に移動する。
+
 ```console
 cd ./workspace.test.laravel8.api
 ```
 
 ## Step 1: Download Laravel 8 App
+
 Laravel 8 プロジェクトを作成する。
+
 ```console
 composer create-project --prefer-dist laravel/laravel bogota
 ```
 
 プロジェクト内に移動する。
+
 ```console
 cd ./bogota
 ```
 
 ## Step 2: Database Configuration
-次に、パスポートチュートリアルプロジェクトを使用して、インストールしたlaravel8のRESTful認証APIのルートディレクトリに移動します。そして、.env ファイルを開きます。次に、データベースの詳細を次のように追加します。
+
+次に、パスポートチュートリアルプロジェクトを使用して、インストールした laravel8 の RESTful 認証 API のルートディレクトリに移動します。そして、.env ファイルを開きます。次に、データベースの詳細を次のように追加します。
 
 .env:
+
 ```php
 DB_CONNECTION=mysql
 DB_HOST=192.168.99.100
@@ -73,7 +75,9 @@ DB_PASSWORD=secret
 ```
 
 ## Step 3: Install Passport Auth
+
 passport パッケージをインストールする。
+
 ```console
 composer require laravel/passport
 ```
@@ -81,6 +85,7 @@ composer require laravel/passport
 passport パッケージをインストールしたら、プロバイダーを追加する。
 
 config / app.php:
+
 ```php
 'providers' =>[
     Laravel\Passport\PassportServiceProvider::class,
@@ -88,17 +93,21 @@ config / app.php:
 ```
 
 一度、マイグレーションを実行しておく。
+
 ```console
 php artisan migrate
 ```
 
-次に、パスポート暗号化キーを生成するためにlaravel8をインストールする必要があります。このコマンドは、安全なアクセストークンを生成するために必要な暗号化キーを作成します。
+次に、パスポート暗号化キーを生成するために laravel8 をインストールする必要があります。このコマンドは、安全なアクセストークンを生成するために必要な暗号化キーを作成します。
+
 ```console
 php artisan passport:install
 ```
 
 ## Step 4: Passport Configuration
+
 App/Models/User.php を編集する。
+
 ```php
 <?php
 
@@ -147,6 +156,7 @@ class User extends Authenticatable
 ```
 
 App/Providers/AuthServiceProvider.php を以下のように更新する。
+
 ```php
 <?php
 
@@ -180,7 +190,8 @@ class AuthServiceProvider extends ServiceProvider
 }
 ```
 
-config / auth.phpに移動し、auth.phpファイルを開きます。次に、APIドライバーをパスポートへのセッションに変更します。このコード'driver' => 'passport'をAPIに配置します。
+config / auth.php に移動し、auth.php ファイルを開きます。次に、API ドライバーをパスポートへのセッションに変更します。このコード'driver' => 'passport'を API に配置します。
+
 ```php
     'guards' => [
         'web' => [
@@ -195,18 +206,23 @@ config / auth.phpに移動し、auth.phpファイルを開きます。次に、A
 ```
 
 ## Step 5: Create Product Table And Model
+
 Product モデルと migration ファイルと model ファイル、factory ファイルを作成する。
+
 ```console
 php artisan make:model Product -mf
 ```
+
 実行結果例:
+
 ```
 Model created successfully.
 Factory created successfully.
 Created Migration: 2020_10_13_141640_create_products_table
 ```
 
-その後、  database / migrationsディレクトリに移動してcreate_products_table.phpファイルを開きます。次に、次のコードを更新します。
+その後、 database / migrations ディレクトリに移動して create_products_table.php ファイルを開きます。次に、次のコードを更新します。
+
 ```php
 <?php
 
@@ -243,9 +259,10 @@ class CreateProductsTable extends Migration
 }
 ```
 
-で充填可能なプロパティを追加product.phpファイルにナビゲートので、アプリ/モデルディレクトリとオープンproduct.phpのファイルとそれに次のコードを更新します。
+で充填可能なプロパティを追加 product.php ファイルにナビゲートので、アプリ/モデルディレクトリとオープン product.php のファイルとそれに次のコードを更新します。
 
 app/Models/Product.php
+
 ```php
 <?php
 
@@ -267,9 +284,10 @@ class Product extends Model
 }
 ```
 
-次に、Productモデルのダミーレコードを追加します。したがって、次のようなファクトリを追加する必要があります。
+次に、Product モデルのダミーレコードを追加します。したがって、次のようなファクトリを追加する必要があります。
 
 database / factories / ProductFactory.php:
+
 ```php
 <?php
 
@@ -303,42 +321,51 @@ class ProductFactory extends Factory
 ```
 
 config/app.php の Faker ロケールを日本語・日本にする。
+
 ```php
 'faker_locale' => 'ja_JP',
 ```
 
 オートロードを実行する。
+
 ```console
 composer dump-autoload
 ```
 
 ## Step 6: Run Migration
+
 マイグレーションを行い、データベースにテーブルを作成する。
+
 ```condole
 php artisan migrate
 ```
 
 対話モードに切り替える。
+
 ```console
 php artisan tinker
 ```
 
 Users テーブルのダミーデータを 100 件作成する。
+
 ```console
 >>> App\Models\User::factory()->count(10)->create()
 ```
 
 次に Products テーブルのダミーデータを 10 件作成する。
+
 ```php
 >>> App\Models\Product::factory()->count(10)->create()
 ```
 
 ## Step 7: Create Auth And CRUD APIs Route
+
 このステップでは、REST API 認証と CRUD 操作の Laravel 8 ルートを作成します。
 
-したがって、routesディレクトリに移動し、api.phpを開きます。次に、次のルートをapi.phpファイルに更新します。
+したがって、routes ディレクトリに移動し、api.php を開きます。次に、次のルートを api.php ファイルに更新します。
 
 routes/api.php:
+
 ```php
 <?php
 
@@ -368,13 +395,16 @@ Route::middleware('auth:api')->group(function () {
 ```
 
 ## Step 8: Passport 認証と CRUD コントローラーを作成する
-PassportAuthControllerおよびProductControllerという名前のコントローラーを作成します。
+
+PassportAuthController および ProductController という名前のコントローラーを作成します。
+
 ```console
 php artisan make:controller Api/PassportAuthController
 php artisan make:controller Api/ProductController
 ```
 
 app / Http / Controllers / Api / PassportAuthController.php:
+
 ```php
 <?php
 
@@ -439,6 +469,7 @@ class PassportAuthController extends Controller
 ```
 
 app/Http/Controllers/Api/ProductController.php:
+
 ```php
 <?php
 
@@ -557,77 +588,99 @@ php artisan serve
 ## POSTMAN で疎通確認
 
 ### ユーザ登録
+
 #### リクエスト
+
 POST http://localhost:8000/api/register
+
 ```json
 {
-    "name": "山本 一郎",
-    "email": "ymmt.icr@aaa.com",
-    "password": "12345678"
+  "name": "山本 一郎",
+  "email": "ymmt.icr@aaa.com",
+  "password": "12345678"
 }
 ```
+
 #### レスポンス
+
 ```json
 {
-    "token": "****"
+  "token": "****"
 }
 ```
 
 ### ログイン
+
 #### リクエスト
+
 POST http://localhost:8000/api/login
+
 ```json
 {
-    "name": "山本 一郎",
-    "email": "ymmt.icr@aaa.com",
-    "password": "12345678"
+  "name": "山本 一郎",
+  "email": "ymmt.icr@aaa.com",
+  "password": "12345678"
 }
 ```
+
 #### レスポンス
+
 ```json
 {
-    "token": "****"
+  "token": "****"
 }
 ```
 
 ### Bearer Token の入力
+
 POSTMAN の Authorization 欄の Type を Bearer Token にする。
 Token をログインのレスポンスにある token にする。
 
 ### Product 一覧の取得
+
 #### リクエスト
+
 GET http://localhost:8000/api/products
+
 #### レスポンス
+
 ```json
-[
-    "success": true,
-    "message": "Product List",
-    "data": [
+{
+  "success": true,
+  "message": "Product List",
+  "data": [
     {
-        "id": 1,
-        "name": "吉本 知実",
-        "detail": "Officiis eius corporis blanditiis.",
-        "created_at": "2020-10-14T02:28:26.000000Z",
-        "updated_at": "2020-10-14T02:28:26.000000Z"
+      "id": 1,
+      "name": "吉本 知実",
+      "detail": "Officiis eius corporis blanditiis.",
+      "created_at": "2020-10-14T02:28:26.000000Z",
+      "updated_at": "2020-10-14T02:28:26.000000Z"
     },
     // ・・・
-]
+  ]
+}
 ```
 
 ### Product ID 4 の Product 情報を取得
+
 #### リクエスト
+
 GET http://localhost:8000/api/products/4
+
 #### レスポンス
+
 ```json
-[
-    "success": true,
-    "message": "Product retrieved successfully.",
-    "data": {
-        "id": 4,
-        "name": "近藤 和也",
-        "detail": "Ea odio rerum exercitationem.",
-        "created_at": "2020-10-14T02:28:26.000000Z",
-        "updated_at": "2020-10-14T02:28:26.000000Z"
-    },
-]
+{
+  "success": true,
+  "message": "Product retrieved successfully.",
+  "data": [
+    {
+      "id": 4,
+      "name": "近藤 和也",
+      "detail": "Ea odio rerum exercitationem.",
+      "created_at": "2020-10-14T02:28:26.000000Z",
+      "updated_at": "2020-10-14T02:28:26.000000Z"
+    }
+  ]
+}
 ```
