@@ -1,6 +1,8 @@
 # Laravel 8 Rest API CRUD を Passport 認証で
 
-Passport 認証のチュートリアルで、Laravel 8 による Rest API を使った CRUD を学習する。このチュートリアルでは、Laravel 8 で Passport 認証を使用して RESTful CRUD API を作成する方法を学習する。Passport 認証は通常、デジタル署名を使用して信頼および検証できる情報を送信するために使用される。RESTful API では、アクションとして HTTP メソッドを使用し、エンドポイントは作用を受けるリソースです。その意味のために HTTP 動詞を使用している。
+Passport 認証のチュートリアルで、Laravel 8 による Rest API を使った CRUD を学習する。このチュートリアルでは、Laravel 8 で Passport 認証を使用して RESTful CRUD API を作成する方法を学習する。Passport 認証は通常、デジタル署名を使用して信頼および検証できる情報を送信するために使用される。
+
+RESTful API では、アクションとして HTTP メソッドを使用し、エンドポイントは作用を受けるリソースです。その意味のために HTTP 動詞を使用している。
 
 - GET：リソースを取得する
 - POST：リソースを作成する
