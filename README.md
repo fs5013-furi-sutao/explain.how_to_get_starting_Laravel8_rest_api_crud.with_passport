@@ -417,6 +417,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class PassportAuthController extends Controller
 {
@@ -452,9 +453,19 @@ class PassportAuthController extends Controller
             'password' => $request->password
         ];
 
-        if (auth()->attempt($data)) {
-            $token = auth()->user()->createToken('Laravel8PassportAuth')->accessToken;
-            return response()->json(['token' => $token], 200);
+        if (Auth::attempt($data)) {
+            
+            $user = User::where('email', $request->email)->first();
+            if ($user) {
+                $token = $user->createToken('Laravel8PassportAuth')->accessToken;
+                return response()->json([
+                    'token' => $token, 'username' => $request->email,
+                    'password' => $request->password
+                ], 200);
+            } else {
+                $response = ["message" => 'User does not exist'];
+                return response($response, 422);
+            }
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);
         }
